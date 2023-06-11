@@ -1,5 +1,5 @@
 import { Card, CardContent, TextField, Box } from '@mui/material';
-import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState, KeyboardEvent } from 'react';
 
 type Todo = {
@@ -32,10 +32,10 @@ const AddTodo = ({ onAddTodo }: AddTodoProps) => {
 
 	return (
 		<Card>
-			<CardContent>
+			<CardContent sx={{ padding: 0 }}>
 				<Box sx={{ display: 'flex', alignItems: 'flex-end' }}>
-					<RadioButtonUncheckedIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
-					<TextField id="input-with-sx" label="What needs to be done" variant="standard" onKeyPress={addTodo} />
+					<ExpandMoreIcon sx={{ color: 'action.active', mr: 1, my: 0.5 }} />
+					<TextField id="input-with-sx" fullWidth label="What needs to be done?" variant="standard" onKeyPress={addTodo} />
 				</Box>
 			</CardContent>
 		</Card>
