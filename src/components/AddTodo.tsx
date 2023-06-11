@@ -26,6 +26,7 @@ const AddTodo = ({ onAddTodo }: AddTodoProps) => {
 					id: Date.now(),
 				});
 				setNewTodo('');
+				(e.target as HTMLInputElement).value = '';
 			}
 		}
 	};

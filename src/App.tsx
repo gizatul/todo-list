@@ -24,7 +24,6 @@ const filterState = {
 };
 
 function App() {
-	console.log('render App');
 	const [todos, setTodos] = useState(initialState);
 	const [activeFilter, setActiveFilter] = useState(filterState.all);
 
@@ -35,7 +34,6 @@ function App() {
 
 	const deleteTodo = (todo: Todo) => {
 		const updatedTodos = todos.filter((item) => item.id !== todo.id);
-		console.log(updatedTodos);
 		setTodos(updatedTodos);
 	};
 
@@ -74,7 +72,7 @@ function App() {
 					/>
 					<ListItemText>
 						<Grid container justifyContent="space-between" alignItems="center">
-							<span>{todo.title}</span>
+							<Box sx={{ textDecoration: todo.isCompleted ? 'line-through' : 'none' }}>{todo.title}</Box>
 							<ClearIcon className="clear-icon" onClick={() => deleteTodo(todo)} />
 						</Grid>
 					</ListItemText>
