@@ -1,9 +1,20 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen, fireEvent } from '@testing-library/react';
 import App from './App';
 
-test('renders learn react link', () => {
-  render(<App />);
-  const linkElement = screen.getByText(/learn react/i);
-  expect(linkElement).toBeInTheDocument();
+describe('App', () => {
+	test('renders the header correctly', () => {
+		render(<App />);
+		const headerElement = screen.getByText(/todos/i);
+		expect(headerElement).toBeInTheDocument();
+	});
+
+	test('clears completed todo items', () => {
+		render(<App />);
+		const clearCompletedButton = screen.getByText(/clear completed/i);
+
+		fireEvent.click(clearCompletedButton);
+
+		const todoItems = screen.queryAllByRole('listitem');
+		expect(todoItems.length).toBe(2);
+	});
 });

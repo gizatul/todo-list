@@ -12,13 +12,12 @@ type AddTodoProps = {
 	onAddTodo: (newTodo: Todo) => void;
 };
 
-const AddTodo = ({ onAddTodo }: AddTodoProps) => {
-	console.log('render Addtodo');
-	const [newTodo, setNewTodo] = useState('');
+const AddTodo = ({ onAddTodo }: AddTodoProps): JSX.Element => {
+	const [newTodo, setNewTodo] = useState<string>('');
 
-	const addTodo = (e: KeyboardEvent<HTMLInputElement>) => {
+	const addTodo = (e: KeyboardEvent<HTMLInputElement>): void => {
 		if (e.key === 'Enter') {
-			const inputValue = (e.target as HTMLInputElement).value;
+			const inputValue: string = (e.target as HTMLInputElement).value;
 			if (inputValue) {
 				onAddTodo({
 					title: inputValue,

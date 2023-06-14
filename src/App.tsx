@@ -3,7 +3,7 @@ import { Container, Card, CardActions, CardContent, List, ListItem, ListItemButt
 import ClearIcon from '@mui/icons-material/Clear';
 import CheckCircleOutlineIcon from '@mui/icons-material/CheckCircleOutline';
 import RadioButtonUncheckedIcon from '@mui/icons-material/RadioButtonUnchecked';
-import { useState } from 'react';
+import { useState, useMemo } from 'react';
 
 type Todo = {
 	title: string;
@@ -23,21 +23,25 @@ const filterState = {
 	completed: 'Completed',
 };
 
-function App() {
-	const [todos, setTodos] = useState(initialState);
-	const [activeFilter, setActiveFilter] = useState(filterState.all);
+const filterOptions = [
+	{ label: 'All', value: filterState.all },
+	{ label: 'Active', value: filterState.active },
+	{ label: 'Completed', value: filterState.completed },
+];
+
+const App = (): JSX.Element => {
+	const [todos, setTodos] = useState<Todo[]>(initialState);
+	const [activeFilter, setActiveFilter] = useState<string>(filterState.all);
 
 	const handleCheck = (todo: Todo) => {
-		const updatedTodos = todos.map((item) => (item.id === todo.id ? { ...item, isCompleted: !item.isCompleted } : item));
-		setTodos(updatedTodos);
+		setTodos((prevState) => prevState.map((item) => (item.id === todo.id ? { ...item, isCompleted: !item.isCompleted } : item)));
 	};
 
-	const deleteTodo = (todo: Todo) => {
-		const updatedTodos = todos.filter((item) => item.id !== todo.id);
-		setTodos(updatedTodos);
+	const deleteTodo = (todo: Todo): void => {
+		setTodos((prevState) => prevState.filter((item) => item.id !== todo.id));
 	};
 
-	const filterTodos = () => {
+	const filterTodos = useMemo((): Todo[] => {
 		switch (activeFilter) {
 			case filterState.active:
 				return todos.filter((todo) => !todo.isCompleted);
@@ -46,9 +50,9 @@ function App() {
 			default:
 				return todos;
 		}
-	};
+	}, [todos, activeFilter]);
 
-	const todosItems = filterTodos()?.map((todo: Todo) => {
+	const todosItems = filterTodos?.map((todo: Todo) => {
 		return (
 			<ListItem
 				key={todo.id}
@@ -81,23 +85,16 @@ function App() {
 		);
 	});
 
-	const handleAddTodo = (newTodo: Todo) => {
+	const handleAddTodo = (newTodo: Todo): void => {
 		setTodos([...todos, newTodo]);
 	};
 
-	const activeTodos = todos?.filter((todo) => !todo.isCompleted) ?? 0;
-	const clearCompleted = () => {
-		const completedTodos = todos?.filter((todo) => !todo.isCompleted);
-		setTodos(completedTodos);
+	const activeTodos = todos?.filter((todo) => !todo.isCompleted);
+	const clearCompleted = (): void => {
+		setTodos((prevState) => prevState?.filter((todo) => !todo.isCompleted));
 	};
 
-	const filterOptions = [
-		{ label: 'All', value: filterState.all },
-		{ label: 'Active', value: filterState.active },
-		{ label: 'Completed', value: filterState.completed },
-	];
-
-	const handleFilterClick = (filterValue: string) => {
+	const handleFilterClick = (filterValue: string): void => {
 		setActiveFilter(filterValue);
 	};
 
@@ -127,6 +124,6 @@ function App() {
 			</Card>
 		</Container>
 	);
-}
+};
 
 export default App;
